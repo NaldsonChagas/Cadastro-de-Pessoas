@@ -18,6 +18,10 @@ export class PersonController {
 
       stateEl.add(option);    
     });
+
+    stateEl.addEventListener('change', () => {
+      this.getCities(stateEl.value);
+    });
   }
 
   getStates() {
@@ -29,7 +33,6 @@ export class PersonController {
       JSON.parse(result).forEach(state => {
         states.push(state);
       });
-      console.log(states);
       this.addStatesInSelect(states.sort((a, b) => {
         if (a.sigla < b.sigla) return -1;
         return 1;
@@ -43,6 +46,7 @@ export class PersonController {
 
   addCitiesInSelect(cities) {
     const citiesEl = document.querySelector('#city');
+    citiesEl.innerHTML = '';
 
     cities.forEach(city => {
       const option = document.createElement('option');
@@ -55,7 +59,7 @@ export class PersonController {
 
   getCities(stateId = 12) {
     const cities = [];
-
+    this.showLoad(true);
     AddressService.getCities(stateId)
     .then((result) => {
       JSON.parse(result).forEach(city => {
@@ -66,7 +70,7 @@ export class PersonController {
         if (a.nome < b.nome) return -1;
         return 1;
       }));
-
+      this.showLoad(false);
     }, err => console.log(err));
   }
 
