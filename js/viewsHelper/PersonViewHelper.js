@@ -44,21 +44,17 @@ export class PersonViewHelper {
         this._cpf.value += '-';
       }
 
-      if (this._cpf.value.charAt(3) != '.' && this._cpf.value.length > 3) {
-        this._cpf.value = this._cpf.value.slice(0, 3) + '.' + 
-        this._cpf.value.slice(4);
-      }
-
-      if (this._cpf.value.charAt(7) != '.' && this._cpf.value.length > 7) {
-        this._cpf.value = this._cpf.value.slice(0, 7) + '.' + 
-        this._cpf.value.slice(8);
-      }
-
-      if (this._cpf.value.charAt(11) != '-' && this._cpf.value.length > 11) {
-        this._cpf.value = this._cpf.value.slice(0, 11) + '-' + 
-        this._cpf.value.slice(12);
-      }
+      this.checkCPFInput(3, '.');
+      this.checkCPFInput(7, '.');
+      this.checkCPFInput(11, '-');
     });
+  }
+
+  checkCPFInput(index, char) {
+    if (this._cpf.value.charAt(index) != char && this._cpf.value.length > index) {
+      this._cpf.value = this._cpf.value.slice(0, index) + char + 
+      this._cpf.value.slice(index + 1);
+    }
   }
 
   telephoneMask() {
