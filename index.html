@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/index.css">
+  <title>Gerenciador de pessoas</title>
+</head>
+
+<body>
+  <h1 class="h2 text-center" id="main-title">Cadastro de Pessoas</h1>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6" id="form-container">
+        <form>
+          <div class="form-group">
+            <label for="name">Nome:</label>
+            <input type="text" name="name" id="name" placeholder="Nome" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="name">Telefone:</label>
+            <input type="text" name="telephone" id="telephone" placeholder="Telefone" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="name">CPF:</label>
+            <input type="text" name="cpf" id="cpf" placeholder="CPF" class="form-control">
+          </div>
+
+          <div class="form-group">
+            <label for="state">UF:</label>
+            <select name="state" id="state" class="form-control">
+
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="city">Município:</label>
+            <select name="city" id="city" class="form-control" disabled>
+              <option >Selecione um UF primeiro</option>
+            </select>
+          </div>
+
+
+          <button class="btn btn-info">Salvar</button>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <table class="table table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Telefone</th>
+              <th>CPF</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
