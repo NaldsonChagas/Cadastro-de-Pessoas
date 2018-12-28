@@ -10,7 +10,7 @@
   margin-bottom: 30px
 }
 
-.load {
+#load {
   position: fixed;
   z-index: 99;
   background-color: white;
@@ -20,7 +20,7 @@
   opacity: 0.9;
 }
 
-.load img {
+#load img {
   position: absolute;
   margin: auto;
   top: 0;

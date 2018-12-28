@@ -1,84 +1,54 @@
 import { AddressService } from "./../service/AddressService";
+import { PersonViewHelper } from "../viewsHelper/PersonViewHelper";
 
 export class PersonController {
 
   constructor() {
-    this.getStates();
-    this.getCities();
+    this.loadStates();
+    this.loadCities();
+
+    this._viewHelper = new PersonViewHelper();
   }
 
-  addStatesInSelect(states) {
-    const stateEl = document.querySelector('#state');
-
-    states.forEach(UF => {
-      const option = document.createElement('option');
-
-      option.value = UF.id;
-      option.text = UF.sigla;
-
-      stateEl.add(option);    
-    });
-
-    stateEl.addEventListener('change', () => {
-      this.getCities(stateEl.value);
-    });
-  }
-
-  getStates() {
+  loadStates() {
     const states = []
-    this.showLoad(true);
+    PersonViewHelper.showLoad(true);
     AddressService.getStates()
-    .then((result) => {
-
-      JSON.parse(result).forEach(state => {
-        states.push(state);
+      .then((result) => {
+        JSON.parse(result).forEach(state => {
+          states.push(state);
+        });
+        this._viewHelper.addInSelect(states.sort((a, b) => {
+          if (a.sigla < b.sigla) return -1;
+          return 1;
+        }));
+        PersonViewHelper.showLoad(false);
+      }).catch((err) => {
+        console.log(err);
       });
-      this.addStatesInSelect(states.sort((a, b) => {
-        if (a.sigla < b.sigla) return -1;
-        return 1;
-      }));
-
-      this.showLoad(false);
-    }).catch((err) => {
-      console.log(err);
-    });
+    this.addEventInState();
   }
 
-  addCitiesInSelect(cities) {
-    const citiesEl = document.querySelector('#city');
-    citiesEl.innerHTML = '';
-
-    cities.forEach(city => {
-      const option = document.createElement('option');
-      option.text = city.nome;
-      option.value = city.nome;
-
-      citiesEl.add(option);
-    });
-  }
-
-  getCities(stateId = 12) {
+  loadCities(stateId = 12) {
     const cities = [];
-    this.showLoad(true);
+    PersonViewHelper.showLoad(true);
     AddressService.getCities(stateId)
-    .then((result) => {
-      JSON.parse(result).forEach(city => {
-        cities.push(city);
-      });
-      
-      this.addCitiesInSelect(cities.sort((a, b) => {
-        if (a.nome < b.nome) return -1;
-        return 1;
-      }));
-      this.showLoad(false);
-    }, err => console.log(err));
+      .then((result) => {
+        JSON.parse(result).forEach(city => {
+          cities.push(city);
+        });
+        this._viewHelper.addInSelect(cities.sort((a, b) => {
+          if (a.nome < b.nome) return -1;
+          return 1;
+        }));
+        PersonViewHelper.showLoad(false);
+      }, err => console.log(err));
   }
 
-  showLoad(show) {
-    const loadEl = document.querySelector('.load');
-    if (show) loadEl.classList.remove('invisible');
-    else 
-      if (!loadEl.classList.contains('invisible')) 
-        loadEl.classList.add('invisible');
+  addEventInState() {
+    document.querySelector('#state')
+      .addEventListener('change', () => {
+        this.loadCities(document.querySelector('#state').value);
+      });
   }
 }
