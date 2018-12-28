@@ -55,7 +55,7 @@ export class PersonViewHelper {
       }
 
       if (this._cpf.value.charAt(11) != '-' && this._cpf.value.length > 11) {
-        this._cpf.value = this._cpf.value.slice(0, 11) + '.' + 
+        this._cpf.value = this._cpf.value.slice(0, 11) + '-' + 
         this._cpf.value.slice(12);
       }
     });
