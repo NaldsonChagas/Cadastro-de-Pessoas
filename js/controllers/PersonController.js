@@ -4,6 +4,7 @@ export class PersonController {
 
   constructor() {
     this.getStates();
+    this.getCities();
   }
 
   addStatesInSelect(states) {
@@ -28,6 +29,7 @@ export class PersonController {
       JSON.parse(result).forEach(state => {
         states.push(state);
       });
+      console.log(states);
       this.addStatesInSelect(states.sort((a, b) => {
         if (a.sigla < b.sigla) return -1;
         return 1;
@@ -37,6 +39,35 @@ export class PersonController {
     }).catch((err) => {
       console.log(err);
     });
+  }
+
+  addCitiesInSelect(cities) {
+    const citiesEl = document.querySelector('#city');
+
+    cities.forEach(city => {
+      const option = document.createElement('option');
+      option.text = city.nome;
+      option.value = city.nome;
+
+      citiesEl.add(option);
+    });
+  }
+
+  getCities(stateId = 12) {
+    const cities = [];
+
+    AddressService.getCities(stateId)
+    .then((result) => {
+      JSON.parse(result).forEach(city => {
+        cities.push(city);
+      });
+      
+      this.addCitiesInSelect(cities.sort((a, b) => {
+        if (a.nome < b.nome) return -1;
+        return 1;
+      }));
+
+    }, err => console.log(err));
   }
 
   showLoad(show) {

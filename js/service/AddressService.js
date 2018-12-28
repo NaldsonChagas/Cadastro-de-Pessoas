@@ -10,7 +10,11 @@ export class AddressService {
     });
   }
 
-  getCities() {
-
+  static getCities(stateId) {
+    return new Promise((resolve, reject) => {
+      HttpService.get(`http://servicodados.ibge.gov.br/api/v1/localidades/estados/${stateId}/municipios`)
+      .then(cities => resolve(cities),
+      err => reject(err));
+    })
   }
 }
