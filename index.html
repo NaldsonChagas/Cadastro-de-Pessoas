@@ -17,12 +17,13 @@
   <div class="light-background invisible" id="box-action">
     <div class="box-action">
       <h3 class="h3 text-center">O que você deseja fazer?</h3>
-
-      <div class="row text-center">
-        <input type="hidden" name="id" id="id-box-action">
-        <button class="btn btn-info" id="update-btn">Alterar</button>
-        <button class="btn btn-danger" id="remove-btn">Apagar</button>
-        <button class="btn" id="cancel-action-button">Cancelar</button>
+      <div class="container-fluid">
+        <div class="row text-center">
+          <input type="hidden" name="id" id="id-box-action">
+          <button class="btn btn-info" id="update-btn">Alterar</button>
+          <button class="btn btn-danger" id="remove-btn">Apagar</button>
+          <button class="btn" id="cancel-action-button">Cancelar</button>
+        </div>
       </div>
     </div>
   </div>
@@ -33,12 +34,12 @@
         <form id="form-person">
           <div class="form-group">
             <label for="name">Nome:</label>
-            <input type="text" name="name" id="name" placeholder="Nome" class="form-control">
+            <input type="text" name="name" id="name" placeholder="Nome" class="form-control" maxlength="18">
           </div>
           <input type="hidden" name="id" id="id">
           <div class="form-group">
             <label for="name">Telefone:</label>
-            <input type="text" name="telephone" id="telephone" placeholder="(00) 0000-0000" class="form-control">
+            <input type="text" name="telephone" id="telephone" placeholder="00 0000-0000" class="form-control" maxlength="12">
           </div>
 
           <div class="form-group">

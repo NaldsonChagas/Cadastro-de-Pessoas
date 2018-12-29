@@ -14,6 +14,7 @@ export class PersonViewHelper {
     this._lastTrClicked;
 
     this.cpfMask();
+    this.telephoneMask();
   }
 
   addInSelect(options) {
@@ -93,16 +94,38 @@ export class PersonViewHelper {
         this._cpf.value += '-';
       }
 
-      this.checkCPFInput(3, '.');
-      this.checkCPFInput(7, '.');
-      this.checkCPFInput(11, '-');
+      this.checkMaskInput(3, '.', this._cpf);
+      this.checkMaskInput(7, '.', this._cpf);
+      this.checkMaskInput(11, '-', this._cpf);
     });
   }
 
-  checkCPFInput(index, char) {
-    if (this._cpf.value.charAt(index) != char && this._cpf.value.length > index) {
-      this._cpf.value = this._cpf.value.slice(0, index) + char +
-        this._cpf.value.slice(index + 1);
+  telephoneMask() {
+    this._telephone.addEventListener('input', () => {
+      if (isNaN(this._telephone.value.slice(-1))) {
+        this._telephone.value = this._telephone.value
+          .substring(0, this._telephone.value.length - 1);
+        return;
+      }
+
+      if (this._telephone.value.length == 2) {
+        this._telephone.value += ' ';
+      }
+
+      if (this._telephone.value.length == 7) {
+        this._telephone.value += '-';
+      }
+
+      this.checkMaskInput(2, ' ', this._telephone);
+      this.checkMaskInput(7, '-', this._telephone);
+      
+    });
+  }
+
+  checkMaskInput(index, char, input) {
+    if (input.value.charAt(index) != char && input.value.length > index) {
+      input.value = input.value.slice(0, index) + char +
+        input.value.slice(index + 1);
     }
   }
 
