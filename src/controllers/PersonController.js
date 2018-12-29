@@ -65,6 +65,7 @@ export class PersonController {
     const idBoxAction = document.querySelector('#id-box-action');
     const updateBtn = document.querySelector('#update-btn');
     const deleteBtn = document.querySelector('#remove-btn');
+    const cancelActionBtn = document.querySelector('#cancel-action-button');
 
     deleteBtn.addEventListener('click', () => {
       PersonService.delete(idBoxAction.value)
@@ -74,8 +75,13 @@ export class PersonController {
           console.log(response);
         }, err => console.log(err));
     });
+
+    cancelActionBtn.addEventListener('click', () => {
+      PersonViewHelper.showBoxAction(false);
+    });
   }
 
+  
   loadStates() {
     const states = []
     PersonViewHelper.showLoad(true);
