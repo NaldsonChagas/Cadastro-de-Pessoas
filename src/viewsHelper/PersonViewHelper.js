@@ -1,3 +1,5 @@
+import { PersonService } from "./../service/PersonService";
+
 export class PersonViewHelper {
 
   constructor() {
@@ -5,6 +7,8 @@ export class PersonViewHelper {
     this._stateSelect = document.querySelector('#state');
 
     this._cpf = document.querySelector('#cpf');
+
+    this._tbody = document.querySelector('#persons-table');
 
     this.cpfMask();
   }
@@ -25,6 +29,40 @@ export class PersonViewHelper {
         optionEl.value = option.nome;
         this._citySelect.add(optionEl);
       }
+    });
+  }
+
+  addPersonTable(person) {
+    const tr = document.createElement('tr');
+    const tdName = document.createElement('td');
+    const tdCpf = document.createElement('td');
+    const inputId = document.createElement('input');
+
+    inputId.value = person.id;
+    inputId.name = 'id';
+    inputId.type = 'hidden';
+
+    tdName.textContent = person.name;
+    tdName.appendChild(inputId);
+    tr.appendChild(tdName);
+    tdCpf.textContent = person.cpf;
+    tr.appendChild(tdCpf);
+
+    this._addTrEvent(tr);
+
+    this._tbody.appendChild(tr);
+  }
+
+  _addTrEvent(tr) {
+    tr.addEventListener('dblclick', () => {
+      if (confirm(`Deseja mesmo remover este dado?`)) {
+        const id = tr.childNodes[0].childNodes[1].value;
+        PersonService.delete(id)
+          .then(response => console.log(response),
+            err => console.log(err));
+        tr.parentNode.removeChild(tr);
+      }
+      return;
     });
   }
 

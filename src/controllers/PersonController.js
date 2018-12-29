@@ -14,8 +14,6 @@ export class PersonController {
     this._cpf = $('#cpf');
     this._state = $('#state');
     this._city = $('#city');
-
-    this._tbody = document.querySelector('#persons-table');
   }
 
   savePerson() {
@@ -27,7 +25,7 @@ export class PersonController {
       PersonService.save(person)
         .then(response => {
           PersonService.listLast(JSON.parse(response))
-            .then(p => this._addPersonTable(
+            .then(p => this._viewHelper.addPersonTable(
               this._createPersonFromJson(JSON.parse(p).person)),
               err => console.log(err))
         }, err => console.log(err));
@@ -38,43 +36,9 @@ export class PersonController {
     PersonService.list()
       .then(persons => {
         JSON.parse(persons).forEach(person => {
-          this._addPersonTable(this._createPersonFromJson(person));
+          this._viewHelper.addPersonTable(this._createPersonFromJson(person));
         });
       }, err => console.log(err));
-  }
-
-  _addPersonTable(person) {
-    const tr = document.createElement('tr');
-    const tdName = document.createElement('td');
-    const tdCpf = document.createElement('td');
-    const inputId = document.createElement('input');
-
-    inputId.value = person.id;
-    inputId.name = 'id';
-    inputId.type = 'hidden';
-
-    tdName.textContent = person.name;
-    tdName.appendChild(inputId);
-    tr.appendChild(tdName);
-    tdCpf.textContent = person.cpf;
-    tr.appendChild(tdCpf);
-
-    this._addTrEvent(tr);
-
-    this._tbody.appendChild(tr);
-  }
-
-  _addTrEvent(tr) {
-    tr.addEventListener('dblclick', () => {
-      if (confirm(`Deseja mesmo remover este dado?`)) {
-        const id = tr.childNodes[0].childNodes[1].value;
-        PersonService.delete(id)
-          .then(response => console.log(response),
-            err => console.log(err));
-        tr.parentNode.removeChild(tr);
-      }
-      return;
-    });
   }
 
   _createPersonFromJson(json) {
