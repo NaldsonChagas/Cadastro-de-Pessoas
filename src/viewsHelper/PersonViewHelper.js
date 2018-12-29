@@ -48,6 +48,8 @@ export class PersonViewHelper {
     tdCpf.textContent = person.cpf;
     tr.appendChild(tdCpf);
 
+    tr.style.cursor = 'pointer';
+
     this._addTrEvent(tr);
 
     this._tbody.appendChild(tr);
