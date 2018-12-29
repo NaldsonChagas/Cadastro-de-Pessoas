@@ -1,18 +1,40 @@
 import { AddressService } from "./../service/AddressService";
 import { PersonViewHelper } from "../viewsHelper/PersonViewHelper";
+import { Person } from "../models/Person";
+import { PersonService } from "../service/PersonService";
 
 export class PersonController {
 
   constructor() {
     this._viewHelper = new PersonViewHelper();
+
+    const $ = document.querySelector.bind(document);
+    this._name = $('#name');
+    this._telephone = $('#telephone');
+    this._cpf = $('#cpf');
+    this._state = $('#state');
+    this._city = $('#city');
   }
 
   savePerson() {
     document.querySelector('#form-person').addEventListener('submit', (e) => {
       e.preventDefault();
 
-      
+      const person = this._createPerson();
+
+      PersonService.save(person)
+        .then(response => console.log(response),
+          err => console.log(err));
     });
+  }
+
+  _createPerson() {
+    return new Person(this._name.value,
+      this._telephone.value,
+      this._cpf.value,
+      this._state.value,
+      this._city.value
+    );
   }
 
   loadStates() {
