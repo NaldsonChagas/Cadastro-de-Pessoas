@@ -1,5 +1,3 @@
-import { PersonService } from "./../service/PersonService";
-
 export class PersonViewHelper {
 
   constructor() {
@@ -9,6 +7,8 @@ export class PersonViewHelper {
     this._cpf = document.querySelector('#cpf');
 
     this._tbody = document.querySelector('#persons-table');
+
+    this._lastTrClicked;
 
     this.cpfMask();
   }
@@ -33,6 +33,7 @@ export class PersonViewHelper {
   }
 
   addPersonTable(person) {
+    this._tbody.innerHTML = '';
     const tr = document.createElement('tr');
     const tdName = document.createElement('td');
     const tdCpf = document.createElement('td');
@@ -56,16 +57,16 @@ export class PersonViewHelper {
   }
 
   _addTrEvent(tr) {
-    tr.addEventListener('dblclick', () => {
-      if (confirm(`Deseja mesmo remover este dado?`)) {
-        const id = tr.childNodes[0].childNodes[1].value;
-        PersonService.delete(id)
-          .then(response => console.log(response),
-            err => console.log(err));
-        tr.parentNode.removeChild(tr);
-      }
-      return;
+    tr.addEventListener('click', () => {
+      this._lastTrClicked = tr;
+      const idBoxAction = document.querySelector('#id-box-action');
+      idBoxAction.value = tr.childNodes[0].childNodes[1].value;
+      PersonViewHelper.showBoxAction(true);
     });
+  }
+ 
+  removeTr() {
+    this._tbody.removeChild(this._lastTrClicked);
   }
 
   cpfMask() {
@@ -90,13 +91,21 @@ export class PersonViewHelper {
 
   checkCPFInput(index, char) {
     if (this._cpf.value.charAt(index) != char && this._cpf.value.length > index) {
-      this._cpf.value = this._cpf.value.slice(0, index) + char + 
-      this._cpf.value.slice(index + 1);
+      this._cpf.value = this._cpf.value.slice(0, index) + char +
+        this._cpf.value.slice(index + 1);
     }
   }
 
+  static showBoxAction(show) {
+    const boxAction = document.querySelector('#box-action');
+    if (show) boxAction.classList.remove('invisible');
+    else 
+      if (!boxAction.classList.contains('invisible'))
+        boxAction.classList.add('invisible');
+  }
+
   static showLoad(show) {
-    const loadEl = document.querySelector('#load');
+    const loadEl = document.querySelector('.light-background');
     if (show) loadEl.classList.remove('invisible');
     else
       if (!loadEl.classList.contains('invisible'))

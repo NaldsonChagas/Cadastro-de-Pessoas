@@ -10,7 +10,7 @@
   margin-bottom: 30px
 }
 
-#load {
+.light-background {
   position: fixed;
   z-index: 99;
   background-color: white;
@@ -20,7 +20,7 @@
   opacity: 0.9;
 }
 
-#load img {
+.light-background img {
   position: absolute;
   margin: auto;
   top: 0;
@@ -28,6 +28,23 @@
   right: 0;
   bottom: 0;
   width: 9%;
+}
+
+.box-action {
+  position: absolute;
+  margin: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  box-shadow: 2px 5px 2px 2px #888888;
+  width: 30%;
+  height: 30%;
+}
+
+.box-action div {
+  margin-top: 30px;
 }
 
 .invisible {

@@ -39,6 +39,7 @@ export class PersonController {
           this._viewHelper.addPersonTable(this._createPersonFromJson(person));
         });
       }, err => console.log(err));
+    this.btnBoxActionEvents();
   }
 
   _createPersonFromJson(json) {
@@ -58,6 +59,21 @@ export class PersonController {
       this._state.value,
       this._city.value
     );
+  }
+
+  btnBoxActionEvents() {
+    const idBoxAction = document.querySelector('#id-box-action');
+    const updateBtn = document.querySelector('#update-btn');
+    const deleteBtn = document.querySelector('#remove-btn');
+
+    deleteBtn.addEventListener('click', () => {
+      PersonService.delete(idBoxAction.value)
+        .then(response => {
+          PersonViewHelper.showBoxAction(false);
+          this._viewHelper.removeTr();
+          console.log(response);
+        }, err => console.log(err));
+    });
   }
 
   loadStates() {

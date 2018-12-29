@@ -11,11 +11,24 @@
 </head>
 
 <body>
-  <div id="load" class="invisible"><img src="img/load.gif" alt="Load icon"></div>
+  <div class="light-background invisible">
+    <img src="img/load.gif" alt="Load icon">
+  </div>
+  <div class="light-background invisible" id="box-action">
+    <div class="box-action">
+      <h3 class="h3 text-center">O que você deseja fazer?</h3>
+
+      <div class="row text-center">
+        <input type="hidden" name="id" id="id-box-action">
+        <button class="btn btn-info" id="update-btn">Alterar</button>
+        <button class="btn btn-danger" id="remove-btn">Apagar</button>
+      </div>
+    </div>
+  </div>
   <h1 class="h2 text-center" id="main-title">Cadastro de Pessoas</h1>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-6" id="form-container">
+      <div class="col-md-5" id="form-container">
         <form id="form-person">
           <div class="form-group">
             <label for="name">Nome:</label>
@@ -50,9 +63,9 @@
           <button class="btn btn-info">Salvar</button>
         </form>
       </div>
-      <div class="col-md-6">
+      <div class="col-md-7">
         <h4 class="h4 text-muted">Pressione duas vezes em uma pessoa para remover</h4>
-        <table class="table table-responsive table-bordered">
+        <table class="table table-responsive table-condensed table-bordered table-striped">
           <thead>
             <tr>
               <th>Nome</th>
