@@ -4,10 +4,15 @@ import { PersonViewHelper } from "../viewsHelper/PersonViewHelper";
 export class PersonController {
 
   constructor() {
-    this.loadStates();
-    this.loadCities();
-
     this._viewHelper = new PersonViewHelper();
+  }
+
+  savePerson() {
+    document.querySelector('#form-person').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      
+    });
   }
 
   loadStates() {

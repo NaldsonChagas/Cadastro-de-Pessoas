@@ -4,11 +4,9 @@ export class PersonViewHelper {
     this._citySelect = document.querySelector('#city');
     this._stateSelect = document.querySelector('#state');
 
-    this._telephone = document.querySelector('#telephone');
     this._cpf = document.querySelector('#cpf');
 
     this.cpfMask();
-    this.telephoneMask();
   }
 
   addInSelect(options) {
@@ -55,10 +53,6 @@ export class PersonViewHelper {
       this._cpf.value = this._cpf.value.slice(0, index) + char + 
       this._cpf.value.slice(index + 1);
     }
-  }
-
-  telephoneMask() {
-
   }
 
   static showLoad(show) {
