@@ -6,7 +6,7 @@ export class PersonService {
     return new Promise((resolve, reject) => {
       HttpService.post('http://localhost:3000/person', JSON.stringify(person))
         .then(response => {
-          resolve('Pessoa salva com sucesso');
+          resolve(response);
         },
           err => {
             console.log(err);
@@ -18,6 +18,14 @@ export class PersonService {
   static list() {
     return new Promise((resolve, reject) => {
       HttpService.get('http://localhost:3000/person')
+        .then(person => resolve(person),
+          err => reject(err));
+    });
+  }
+
+  static listLast(user) {
+    return new Promise((resolve, reject) => {
+      HttpService.get(`http://localhost:3000/person/${user.id}`)
         .then(person => resolve(person),
           err => reject(err));
     });

@@ -2,7 +2,6 @@ import { AddressService } from "./../service/AddressService";
 import { PersonViewHelper } from "../viewsHelper/PersonViewHelper";
 import { Person } from "../models/Person";
 import { PersonService } from "../service/PersonService";
-import { HttpService } from "../service/HttpService";
 
 export class PersonController {
 
@@ -23,36 +22,51 @@ export class PersonController {
     document.querySelector('#form-person').addEventListener('submit', (e) => {
       e.preventDefault();
 
-      const person = this._createPerson();
+      const person = this._createPersonFromHTML();
 
       PersonService.save(person)
-        .then(response => console.log(response),
-          err => console.log(err));
+        .then(response => {
+          PersonService.listLast(JSON.parse(response))
+            .then(p => this._addPersonTable(this._createPersonFromJson(JSON.parse(p).person)),
+              err => console.log(err))
+        }, err => console.log(err));
     });
   }
 
   listAll() {
     PersonService.list()
-    .then(persons => {
-      JSON.parse(persons).forEach(person => {
-        const tr = document.createElement('tr');
-        const tdName = document.createElement('td');
-        const tdTelephone = document.createElement('td');
-        const tdCpf = document.createElement('td');
-
-        tdName.textContent = person._name;
-        tr.appendChild(tdName);
-        tdTelephone.textContent = person._telephone;
-        tr.appendChild(tdTelephone);
-        tdCpf.textContent = person._cpf;
-        tr.appendChild(tdCpf);
-
-        this._tbody.appendChild(tr);
-      });      
-    }, err => console.log(err));
+      .then(persons => {
+        JSON.parse(persons).forEach(person => {
+          this._addPersonTable(this._createPersonFromJson(person));
+        });
+      }, err => console.log(err));
   }
 
-  _createPerson() {
+  _addPersonTable(person) {
+    const tr = document.createElement('tr');
+    const tdName = document.createElement('td');
+    const tdTelephone = document.createElement('td');
+    const tdCpf = document.createElement('td');
+
+    tdName.textContent = person.name;
+    tr.appendChild(tdName);
+    tdTelephone.textContent = person.telephone;
+    tr.appendChild(tdTelephone);
+    tdCpf.textContent = person.cpf;
+    tr.appendChild(tdCpf);
+
+    this._tbody.appendChild(tr);
+  }
+
+  _createPersonFromJson(json) {
+    return new Person(json._name,
+      json._telephone,
+      json._cpf,
+      json._state,
+      json._city);
+  }
+
+  _createPersonFromHTML() {
     return new Person(this._name.value,
       this._telephone.value,
       this._cpf.value,
