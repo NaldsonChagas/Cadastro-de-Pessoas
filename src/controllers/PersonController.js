@@ -36,11 +36,9 @@ export class PersonController {
                 this._createPersonFromJson(JSON.parse(p).person));
             },
               err => console.log(err))
-
+          this.resetForm();
         }, err => console.log(err));
     });
-
-    this.resetForm();
   }
 
   listAll() {
