@@ -9,6 +9,7 @@ export class PersonController {
     this._viewHelper = new PersonViewHelper();
 
     const $ = document.querySelector.bind(document);
+    this._id = $('#id');
     this._name = $('#name');
     this._telephone = $('#telephone');
     this._cpf = $('#cpf');
@@ -22,14 +23,24 @@ export class PersonController {
 
       const person = this._createPersonFromHTML();
 
+      if (this._id.value) {
+        this.update(person);
+        return;
+      }
+
       PersonService.save(person)
         .then(response => {
-          PersonService.listLast(JSON.parse(response))
-            .then(p => this._viewHelper.addPersonTable(
-              this._createPersonFromJson(JSON.parse(p).person)),
+          PersonService.listById(JSON.parse(response).id)
+            .then(p => {
+              this._viewHelper.addPersonTable(
+                this._createPersonFromJson(JSON.parse(p).person));
+            },
               err => console.log(err))
+
         }, err => console.log(err));
     });
+
+    this.resetForm();
   }
 
   listAll() {
@@ -40,6 +51,31 @@ export class PersonController {
         });
       }, err => console.log(err));
     this.btnBoxActionEvents();
+  }
+
+  update(person) {
+    PersonService.put(this._id.value, person)
+      .then(response => {
+        PersonService.listById(this._id.value)
+          .then(personJson => {
+
+            this._viewHelper.removeTr();
+            this._viewHelper.addPersonTable(
+              this._createPersonFromJson(JSON.parse(personJson).person)
+            );
+            this.resetForm();
+
+          }, err => console.log(err))
+      },
+        err => console.log(err));
+  }
+
+  remove(idBoxAction) {
+    PersonService.delete(idBoxAction.value)
+      .then(response => {
+        PersonViewHelper.showBoxAction(false);
+        this._viewHelper.removeTr();
+      }, err => console.log(err));
   }
 
   _createPersonFromJson(json) {
@@ -67,13 +103,27 @@ export class PersonController {
     const deleteBtn = document.querySelector('#remove-btn');
     const cancelActionBtn = document.querySelector('#cancel-action-button');
 
-    deleteBtn.addEventListener('click', () => {
-      PersonService.delete(idBoxAction.value)
-        .then(response => {
+    updateBtn.addEventListener('click', () => {
+
+      PersonService.listById(idBoxAction.value)
+        .then(personJson => {
+
+          const person = JSON.parse(personJson).person;
+
+          this._viewHelper.fillsForm(
+            this._createPersonFromJson(person)
+          );
+
+          this.loadCities(person._state);
+          this._id.value = person._id;
           PersonViewHelper.showBoxAction(false);
-          this._viewHelper.removeTr();
-          console.log(response);
+
         }, err => console.log(err));
+
+    });
+
+    deleteBtn.addEventListener('click', () => {
+      this.remove(idBoxAction);
     });
 
     cancelActionBtn.addEventListener('click', () => {
@@ -81,7 +131,7 @@ export class PersonController {
     });
   }
 
-  
+
   loadStates() {
     const states = []
     PersonViewHelper.showLoad(true);
@@ -122,5 +172,10 @@ export class PersonController {
       .addEventListener('change', () => {
         this.loadCities(document.querySelector('#state').value);
       });
+  }
+
+  resetForm() {
+    document.querySelector('#form-person').reset();
+    this._id.value = '';
   }
 }

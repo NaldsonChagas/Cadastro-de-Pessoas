@@ -1,12 +1,15 @@
 export class PersonViewHelper {
 
   constructor() {
-    this._citySelect = document.querySelector('#city');
-    this._stateSelect = document.querySelector('#state');
+    const $ = document.querySelector.bind(document);
+    
+    this._name = $('#name');
+    this._telephone = $('#telephone');
+    this._cpf = $('#cpf');
+    this._state = $('#state');
+    this._city = $('#city');
 
-    this._cpf = document.querySelector('#cpf');
-
-    this._tbody = document.querySelector('#persons-table');
+    this._tbody = $('#persons-table');
 
     this._lastTrClicked;
 
@@ -16,24 +19,23 @@ export class PersonViewHelper {
   addInSelect(options) {
     const isState = options[0].sigla;
 
-    if (!isState) this._citySelect.innerHTML = '';
+    if (!isState) this._city.innerHTML = '';
     options.forEach(option => {
       const optionEl = document.createElement('option');
 
       if (isState) {
         optionEl.text = option.sigla;
         optionEl.value = option.id;
-        this._stateSelect.add(optionEl);
+        this._state.add(optionEl);
       } else {
         optionEl.text = option.nome;
         optionEl.value = option.nome;
-        this._citySelect.add(optionEl);
+        this._city.add(optionEl);
       }
     });
   }
 
   addPersonTable(person) {
-    this._tbody.innerHTML = '';
     const tr = document.createElement('tr');
     const tdName = document.createElement('td');
     const tdCpf = document.createElement('td');
@@ -67,6 +69,14 @@ export class PersonViewHelper {
  
   removeTr() {
     this._tbody.removeChild(this._lastTrClicked);
+  }
+
+  fillsForm(person) {
+    this._name.value = person.name;
+    this._telephone.value = person.telephone;
+    this._cpf.value = person.cpf;
+    this._state.value = person.state;
+    this._city.value = person.city;
   }
 
   cpfMask() {

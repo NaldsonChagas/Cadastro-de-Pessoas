@@ -16,9 +16,17 @@ export class HttpService {
     });
   }
 
-  static delete(url, id) {
+  static delete(url) {
     return new Promise((resolve, reject) => {
       HttpService.request('DELETE', url)
+        .then(response => resolve(response),
+          err => reject(err));
+    });
+  }
+
+  static put(url, object) {
+    return new Promise((resolve, reject) => {
+      HttpService.request('PUT', url, object)
         .then(response => resolve(response),
           err => reject(err));
     });

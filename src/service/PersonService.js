@@ -23,9 +23,9 @@ export class PersonService {
     });
   }
 
-  static listLast(user) {
+  static listById(id) {
     return new Promise((resolve, reject) => {
-      HttpService.get(`http://localhost:3000/person/${user.id}`)
+      HttpService.get(`http://localhost:3000/person/${id}`)
         .then(person => resolve(person),
           err => reject(err));
     });
@@ -34,6 +34,15 @@ export class PersonService {
   static delete(id) {
     return new Promise((resolve, reject) => {
       HttpService.delete(`http://localhost:3000/person/${id}`)
+        .then(response => resolve(response),
+          err => reject(err));
+    });
+  }
+
+  static put(id, person) {
+    return new Promise((resolve, reject) => {
+      HttpService.put(`http://localhost:3000/person/${id}`,
+        JSON.stringify(person))
         .then(response => resolve(response),
           err => reject(err));
     });
