@@ -27,7 +27,8 @@ export class PersonController {
       PersonService.save(person)
         .then(response => {
           PersonService.listLast(JSON.parse(response))
-            .then(p => this._addPersonTable(this._createPersonFromJson(JSON.parse(p).person)),
+            .then(p => this._addPersonTable(
+              this._createPersonFromJson(JSON.parse(p).person)),
               err => console.log(err))
         }, err => console.log(err));
     });
@@ -45,21 +46,40 @@ export class PersonController {
   _addPersonTable(person) {
     const tr = document.createElement('tr');
     const tdName = document.createElement('td');
-    const tdTelephone = document.createElement('td');
     const tdCpf = document.createElement('td');
+    const inputId = document.createElement('input');
+
+    inputId.value = person.id;
+    inputId.name = 'id';
+    inputId.type = 'hidden';
 
     tdName.textContent = person.name;
+    tdName.appendChild(inputId);
     tr.appendChild(tdName);
-    tdTelephone.textContent = person.telephone;
-    tr.appendChild(tdTelephone);
     tdCpf.textContent = person.cpf;
     tr.appendChild(tdCpf);
+
+    this._addTrEvent(tr);
 
     this._tbody.appendChild(tr);
   }
 
+  _addTrEvent(tr) {
+    tr.addEventListener('dblclick', () => {
+      if (confirm(`Deseja mesmo remover este dado?`)) {
+        const id = tr.childNodes[0].childNodes[1].value;
+        PersonService.delete(id)
+          .then(response => console.log(response),
+            err => console.log(err));
+        tr.parentNode.removeChild(tr);
+      }
+      return;
+    });
+  }
+
   _createPersonFromJson(json) {
-    return new Person(json._name,
+    return new Person(json._id,
+      json._name,
       json._telephone,
       json._cpf,
       json._state,
@@ -67,7 +87,8 @@ export class PersonController {
   }
 
   _createPersonFromHTML() {
-    return new Person(this._name.value,
+    return new Person(undefined,
+      this._name.value,
       this._telephone.value,
       this._cpf.value,
       this._state.value,

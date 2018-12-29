@@ -16,6 +16,14 @@ export class HttpService {
     });
   }
 
+  static delete(url, id) {
+    return new Promise((resolve, reject) => {
+      HttpService.request('DELETE', url)
+        .then(response => resolve(response),
+          err => reject(err));
+    });
+  }
+
   static request(method, url, object) {
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();

@@ -30,4 +30,12 @@ export class PersonService {
           err => reject(err));
     });
   }
+
+  static delete(id) {
+    return new Promise((resolve, reject) => {
+      HttpService.delete(`http://localhost:3000/person/${id}`)
+        .then(response => resolve(response),
+          err => reject(err));
+    });
+  }
 }

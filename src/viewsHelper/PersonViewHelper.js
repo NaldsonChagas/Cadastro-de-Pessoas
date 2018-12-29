@@ -18,7 +18,7 @@ export class PersonViewHelper {
 
       if (isState) {
         optionEl.text = option.sigla;
-        optionEl.value = option.nome;
+        optionEl.value = option.id;
         this._stateSelect.add(optionEl);
       } else {
         optionEl.text = option.nome;
