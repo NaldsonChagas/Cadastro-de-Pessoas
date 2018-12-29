@@ -2,6 +2,7 @@ import { AddressService } from "./../service/AddressService";
 import { PersonViewHelper } from "../viewsHelper/PersonViewHelper";
 import { Person } from "../models/Person";
 import { PersonService } from "../service/PersonService";
+import { HttpService } from "../service/HttpService";
 
 export class PersonController {
 
@@ -14,6 +15,8 @@ export class PersonController {
     this._cpf = $('#cpf');
     this._state = $('#state');
     this._city = $('#city');
+
+    this._tbody = document.querySelector('#persons-table');
   }
 
   savePerson() {
@@ -26,6 +29,27 @@ export class PersonController {
         .then(response => console.log(response),
           err => console.log(err));
     });
+  }
+
+  listAll() {
+    PersonService.list()
+    .then(persons => {
+      JSON.parse(persons).forEach(person => {
+        const tr = document.createElement('tr');
+        const tdName = document.createElement('td');
+        const tdTelephone = document.createElement('td');
+        const tdCpf = document.createElement('td');
+
+        tdName.textContent = person._name;
+        tr.appendChild(tdName);
+        tdTelephone.textContent = person._telephone;
+        tr.appendChild(tdTelephone);
+        tdCpf.textContent = person._cpf;
+        tr.appendChild(tdCpf);
+
+        this._tbody.appendChild(tr);
+      });      
+    }, err => console.log(err));
   }
 
   _createPerson() {
