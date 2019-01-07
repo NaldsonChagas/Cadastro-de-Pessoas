@@ -17,6 +17,14 @@ export class PersonController {
     this._city = $('#city');
   }
 
+  init() {
+    this.btnClean();
+    this.loadStates();
+    this.loadCities();
+    this.listAll();
+    this.savePerson();
+  }
+
   savePerson() {
     document.querySelector('#form-person').addEventListener('submit', (e) => {
       e.preventDefault();
@@ -170,6 +178,12 @@ export class PersonController {
       .addEventListener('change', () => {
         this.loadCities(document.querySelector('#state').value);
       });
+  }
+
+  btnClean() {
+    document.querySelector('#btn-clean').addEventListener('click', () => {
+      this.resetForm();
+    });
   }
 
   resetForm() {
